@@ -11,16 +11,17 @@ const userNameInput = document.querySelector('#username');
 const messageContentInput = document.querySelector('#message-content');
 
 const socket = io();
+
 socket.on('message', ({ author, content }) => addMessage(author, content));
 
-const messages = [];
 //login form logic
 function login(e) {
   e.preventDefault();
   if (userNameInput.value) {
-    userName = userNameInput;
+    userName = userNameInput.value;
     loginForm.classList.toggle('show');
     messagesSection.classList.toggle('show');
+    socket.emit('join', { login: userName, id: socket.id });
   } else {
     alert('Username cannot be empty');
   }
@@ -45,15 +46,6 @@ function addMessage(author, content) {
 `;
   messagesList.appendChild(message);
 }
-// function sendMessage(e) {
-//   e.preventDefault();
-//   if (messageContentInput.value) {
-//     addMessage(userName, messageContentInput.value);
-//   } else {
-//     alert('Message cannot be empty');
-//   }
-//   messageContentInput.value = '';
-// }
 
 function sendMessage(e) {
   e.preventDefault();
