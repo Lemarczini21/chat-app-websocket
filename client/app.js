@@ -14,6 +14,14 @@ const socket = io();
 
 socket.on('message', ({ author, content }) => addMessage(author, content));
 
+socket.on('newUser', (login) =>
+  addMessage('Chat Bot', `${login} has joined the conversation!`)
+);
+
+socket.on('removeUser', ({ login }) =>
+  addMessage('Chat Bot', `${login} has lef the conversation... :(`)
+);
+
 //login form logic
 function login(e) {
   e.preventDefault();

@@ -37,11 +37,14 @@ io.on('connection', (socket) => {
           user.id +
           ' has left the chat'
       );
+      const login = user.login;
+      socket.broadcast.emit('removeUser', login);
     }
   });
   console.log("I've added a listener on message event \n");
   socket.on('join', ({ login }) => {
     console.log('JOIN user: ' + login + ' id: ' + socket.id);
     users.push({ login: login, id: socket.id });
+    socket.broadcast.emit('newUser', login);
   });
 });
