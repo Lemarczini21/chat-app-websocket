@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Oh, socket ' + socket.id + ' has left');
     const index = users.findIndex((user) => user.id === socket.id);
-    if (index !== 1) {
+    if (index !== -1) {
       const user = users.splice(index, 1)[0];
       console.log(
         'User ' +
@@ -37,11 +37,9 @@ io.on('connection', (socket) => {
           user.id +
           ' has left the chat'
       );
-      const login = user.login;
-      socket.broadcast.emit('removeUser', login);
+      socket.broadcast.emit('removeUser', user);
     }
   });
-  console.log("I've added a listener on message event \n");
   socket.on('join', ({ login }) => {
     console.log('JOIN user: ' + login + ' id: ' + socket.id);
     users.push({ login: login, id: socket.id });
